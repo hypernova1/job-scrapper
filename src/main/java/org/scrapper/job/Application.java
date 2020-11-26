@@ -1,5 +1,6 @@
 package org.scrapper.job;
 
+import org.scrapper.job.context.JobScrapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -16,6 +17,6 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("Hello World");
+        JobScrapper.execute();
     }
 }
