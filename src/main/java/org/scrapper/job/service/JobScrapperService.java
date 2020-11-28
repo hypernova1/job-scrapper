@@ -1,14 +1,14 @@
-package org.scrapper.job.context;
+package org.scrapper.job.service;
 
 import lombok.RequiredArgsConstructor;
-import org.scrapper.job.service.RocketPunchScrapper;
+import org.scrapper.job.util.RocketPunchScrapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class JobScrapper {
+public class JobScrapperService {
 
     private final RocketPunchScrapper rocketPunchScrapper;
 

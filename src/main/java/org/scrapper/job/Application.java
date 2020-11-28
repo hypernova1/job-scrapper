@@ -1,7 +1,7 @@
 package org.scrapper.job;
 
 import lombok.RequiredArgsConstructor;
-import org.scrapper.job.context.JobScrapper;
+import org.scrapper.job.service.JobScrapperService;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class Application implements CommandLineRunner {
         application.run(args);
     }
 
-    private final JobScrapper jobScrapper;
+    private final JobScrapperService jobScrapper;
 
     @Override
     public void run(String... args) throws Exception {
