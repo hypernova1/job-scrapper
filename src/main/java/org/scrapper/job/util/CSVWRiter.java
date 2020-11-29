@@ -23,13 +23,13 @@ public class CSVWRiter {
             br.newLine();
             for (int i = 0; i < jobOfferPostList.size(); i++) {
                 String jobOffer = (i + 1) + CSV_SEPARATOR +
-                        jobOfferPostList.get(i).getTitle() + CSV_SEPARATOR +
-                        jobOfferPostList.get(i).getCompanyName() + CSV_SEPARATOR +
-                        jobOfferPostList.get(i).getCareers().replace(",", "/") + CSV_SEPARATOR +
-                        jobOfferPostList.get(i).getDescription() + CSV_SEPARATOR +
-                        jobOfferPostList.get(i).getEndDate() + CSV_SEPARATOR +
+                        jobOfferPostList.get(i).getTitle().replace(",", " ") + CSV_SEPARATOR +
+                        jobOfferPostList.get(i).getCompanyName().replace(",", " ") + CSV_SEPARATOR +
+                        jobOfferPostList.get(i).getCareers().replace(",", " ") + CSV_SEPARATOR +
+                        jobOfferPostList.get(i).getDescription().replace(",", " ") + CSV_SEPARATOR +
+                        jobOfferPostList.get(i).getEndDate().replace(",", " ") + CSV_SEPARATOR +
                         jobOfferPostList.get(i).getRegDate() + CSV_SEPARATOR +
-                        jobOfferPostList.get(i).getLink() + CSV_SEPARATOR;
+                        jobOfferPostList.get(i).getLink().replace(",", " ") + CSV_SEPARATOR;
 
                 br.write(jobOffer);
                 br.newLine();

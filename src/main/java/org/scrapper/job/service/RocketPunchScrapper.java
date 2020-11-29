@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class RocketPunchScrapper {
 
     private final RestTemplate restTemplate;
@@ -30,9 +32,9 @@ public class RocketPunchScrapper {
 
     public void execute() throws IOException {
         List<JobOfferPost> jobOfferPostList = extractJobOfferData();
-        System.out.println(jobOfferPostList.size());
+        log.info(jobOfferPostList.size() + "개 데이터 수집");
         CSVWRiter.writeSVS(jobOfferPostList);
-        System.out.println("create CSV");
+        log.info("CSV 출력 완료");
     }
 
     private List<JobOfferPost> extractJobOfferData() throws JsonProcessingException {
@@ -42,7 +44,7 @@ public class RocketPunchScrapper {
             String response = getResponse(page);
             Elements jobOfferElementList = findCompanyList(response);
             jobOfferPostList.addAll(extractJobOfferList(jobOfferElementList));
-            if (jobOfferElementList.size() != jobOfferPostList.size()) {
+            if (isLastPage(jobOfferPostList, jobOfferElementList)) {
                 return jobOfferPostList;
             }
             page++;
@@ -51,12 +53,12 @@ public class RocketPunchScrapper {
 
     private List<JobOfferPost> extractJobOfferList(Elements jobOfferElementList) {
         List<JobOfferPost> JobOfferList = new ArrayList<>();
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd"));
+
         for (Element element : jobOfferElementList) {
             Elements jobDates = element.getElementsByClass("job-dates").get(0).getElementsByTag("span");
             String writeDate = jobDates.get(1).text().split(" ")[0];
 
-            if (!writeDate.trim().equals(today)) {
+            if (!isTodayPost(writeDate)) {
                 break;
             }
 
@@ -121,6 +123,15 @@ public class RocketPunchScrapper {
             sb.append("&career_type").append(career);
         }
         return sb.toString();
+    }
+
+    private boolean isLastPage(List<JobOfferPost> jobOfferPostList, Elements jobOfferElementList) {
+        return jobOfferElementList.size() != jobOfferPostList.size();
+    }
+
+    private boolean isTodayPost(String writeDate) {
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd"));
+        return writeDate.trim().equals(today);
     }
 
 }
